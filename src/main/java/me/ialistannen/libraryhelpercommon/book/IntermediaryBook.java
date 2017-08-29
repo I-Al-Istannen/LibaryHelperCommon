@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -83,19 +84,20 @@ public class IntermediaryBook {
       }
       extra.put(StringBookDataKey.getNormalizedName(entry.getKey().name()), entry.getValue());
     }
+    List<Pair<String, String>> authors = book.getData(StandardBookDataKeys.AUTHORS);
     return new IntermediaryBook(
-        book.getData(StandardBookDataKeys.TITLE),
-        book.getData(StandardBookDataKeys.AUTHORS),
-        book.getData(StandardBookDataKeys.PUBLISHER),
-        book.getData(StandardBookDataKeys.COVER_TYPE),
-        book.getData(StandardBookDataKeys.DESCRIPTION),
-        book.getData(StandardBookDataKeys.PAGE_COUNT),
-        book.getData(StandardBookDataKeys.LANGUAGE),
-        book.getData(StandardBookDataKeys.ISBN_STRING),
-        book.getData(StandardBookDataKeys.ISBN),
-        book.getData(StandardBookDataKeys.PRICE),
-        book.getData(BorrowerKey.INSTANCE),
-        book.getData(StandardBookDataKeys.RATING),
+        (String) book.getData(StandardBookDataKeys.TITLE),
+        authors,
+        (String) book.getData(StandardBookDataKeys.PUBLISHER),
+        (String) book.getData(StandardBookDataKeys.COVER_TYPE),
+        (String) book.getData(StandardBookDataKeys.DESCRIPTION),
+        (Integer) book.getData(StandardBookDataKeys.PAGE_COUNT),
+        (String) book.getData(StandardBookDataKeys.LANGUAGE),
+        (String) book.getData(StandardBookDataKeys.ISBN_STRING),
+        (Isbn) book.getData(StandardBookDataKeys.ISBN),
+        (Price) book.getData(StandardBookDataKeys.PRICE),
+        (Double) book.getData(StandardBookDataKeys.RATING),
+        (String) book.getData(BorrowerKey.INSTANCE),
         extra
     );
   }
@@ -145,9 +147,12 @@ public class IntermediaryBook {
         .enableComplexMapKeySerialization()
         .registerTypeAdapter(IntermediaryBook.class, Deserializer.INSTANCE)
         .registerTypeAdapterFactory(new LowercaseBookDataKeySerializer())
-        .registerTypeAdapter(Isbn.class,
-            (JsonSerializer<Isbn>) (src, type, ctx) -> new JsonPrimitive(
-                src.getDigitsAsString()))
+        .registerTypeAdapter(Isbn.class, new JsonSerializer<Isbn>() {
+          @Override
+          public JsonElement serialize(Isbn src, Type typeOfSrc, JsonSerializationContext context) {
+            return new JsonPrimitive(src.getDigitsAsString());
+          }
+        })
         .registerTypeAdapter(Isbn.class, new IsbnJsonDeserializer());
   }
 
