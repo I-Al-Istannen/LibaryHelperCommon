@@ -61,6 +61,8 @@
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
+          <minimizeJar>true</minimizeJar>
+
           <transformers>
             <transformer
               implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -109,7 +111,6 @@
   </repositories>
 
   <dependencies>
-
     <!--JUNIT-->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -118,32 +119,12 @@
       <scope>test</scope>
     </dependency>
 
-    <!--ELASTIC-->
-    <dependency>
-      <groupId>org.elasticsearch.client</groupId>
-      <artifactId>transport</artifactId>
-      <version>5.5.1</version>
-    </dependency>
-
-    <!--ELASTIC LOGGER-->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.8.2</version>
-    </dependency>
-
-    <!--SERVER-->
-    <dependency>
-      <groupId>io.undertow</groupId>
-      <artifactId>undertow-core</artifactId>
-      <version>1.4.18.Final</version>
-    </dependency>
-
     <!--ISBN LOOKUP LIBRARY-->
     <dependency>
       <groupId>com.github.I-Al-Istannen</groupId>
       <artifactId>IsbnLookupLib</artifactId>
       <version>00530fbf58</version>
+      <scope>compile</scope>
     </dependency>
 
     <!--GSON-->
@@ -151,6 +132,7 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.8.0</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
