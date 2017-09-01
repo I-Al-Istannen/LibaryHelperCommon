@@ -2,6 +2,7 @@ package me.ialistannen.libraryhelpercommon.book;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import me.ialistannen.isbnlookuplib.book.Book;
 import me.ialistannen.isbnlookuplib.book.BookDataKey;
@@ -19,6 +20,22 @@ public class LoanableBook extends Book {
     Collections.addAll(this, StandardBookDataKeys.values());
     add(BorrowerKey.INSTANCE);
   }};
+
+  /**
+   * Creates an empty {@link LoanableBook}.
+   */
+  public LoanableBook() {
+  }
+
+  /**
+   * @param book The {@link Book} to copy
+   */
+  public LoanableBook(Book book) {
+    this();
+    for (Entry<BookDataKey, Object> entry : book.getAllData().entrySet()) {
+      setData(entry.getKey(), entry.getValue());
+    }
+  }
 
   @Override
   public void setData(BookDataKey key, Object value) {
