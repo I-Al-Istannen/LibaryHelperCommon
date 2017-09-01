@@ -123,8 +123,10 @@ public class IntermediaryBook {
     setBookDataRespectNull(book, BorrowerKey.INSTANCE, borrower);
     setBookDataRespectNull(book, StandardBookDataKeys.RATING, rating);
 
-    for (Entry<String, Object> entry : extra.entrySet()) {
-      book.setData(new StringBookDataKey(entry.getKey()), entry.getValue());
+    if (extra != null) {
+      for (Entry<String, Object> entry : extra.entrySet()) {
+        book.setData(new StringBookDataKey(entry.getKey()), entry.getValue());
+      }
     }
 
     return book;
