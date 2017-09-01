@@ -123,7 +123,7 @@
     <dependency>
       <groupId>com.github.I-Al-Istannen</groupId>
       <artifactId>IsbnLookupLib</artifactId>
-      <version>00530fbf58</version>
+      <version>a387c0fa30</version>
       <scope>compile</scope>
     </dependency>
 
