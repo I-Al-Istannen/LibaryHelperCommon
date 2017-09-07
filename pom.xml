@@ -116,7 +116,7 @@
     <dependency>
       <groupId>com.github.I-Al-Istannen</groupId>
       <artifactId>IsbnLookupLib</artifactId>
-      <version>1b284223fc</version>
+      <version>64a9b2076f</version>
       <scope>compile</scope>
     </dependency>
 
