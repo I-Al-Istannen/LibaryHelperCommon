@@ -47,7 +47,7 @@ public class LoanableBook extends Book {
   }
 
   private void assertIsTrivialValue(Object object) {
-    if (object instanceof String || object instanceof Number) {
+    if (object instanceof String || object instanceof Number || object == null) {
       return;
     }
 
