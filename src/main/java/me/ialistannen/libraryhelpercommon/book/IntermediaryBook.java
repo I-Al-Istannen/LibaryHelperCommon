@@ -49,12 +49,14 @@ public class IntermediaryBook {
   private Price price;
   private Double rating;
   private String borrower;
+  private final List<String> genre;
   private Map<String, Object> extra;
 
   private IntermediaryBook(String title,
       List<Pair<String, String>> authors, String publisher, String coverType,
       String description, Integer pageCount, String language, String isbnString,
-      Isbn isbn, Price price, Double rating, String borrower, Map<String, Object> extra) {
+      Isbn isbn, Price price, Double rating, String borrower, List<String> genre,
+      Map<String, Object> extra) {
     this.title = title;
     this.authors = authors;
     this.publisher = publisher;
@@ -67,6 +69,7 @@ public class IntermediaryBook {
     this.price = price;
     this.rating = rating;
     this.borrower = borrower;
+    this.genre = genre;
     this.extra = extra;
   }
 
@@ -85,6 +88,7 @@ public class IntermediaryBook {
       extra.put(StringBookDataKey.getNormalizedName(entry.getKey().name()), entry.getValue());
     }
     List<Pair<String, String>> authors = book.getData(StandardBookDataKeys.AUTHORS);
+    List<String> genre = book.getData(StandardBookDataKeys.GENRE);
     return new IntermediaryBook(
         (String) book.getData(StandardBookDataKeys.TITLE),
         authors,
@@ -98,6 +102,7 @@ public class IntermediaryBook {
         (Price) book.getData(StandardBookDataKeys.PRICE),
         (Double) book.getData(StandardBookDataKeys.RATING),
         (String) book.getData(BorrowerKey.INSTANCE),
+        genre,
         extra
     );
   }
@@ -122,6 +127,7 @@ public class IntermediaryBook {
     setBookDataRespectNull(book, StandardBookDataKeys.PRICE, price);
     setBookDataRespectNull(book, BorrowerKey.INSTANCE, borrower);
     setBookDataRespectNull(book, StandardBookDataKeys.RATING, rating);
+    setBookDataRespectNull(book, StandardBookDataKeys.GENRE, genre);
 
     if (extra != null) {
       for (Entry<String, Object> entry : extra.entrySet()) {
@@ -173,6 +179,7 @@ public class IntermediaryBook {
         + ", price=" + price
         + ", rating=" + rating
         + ", borrower='" + borrower + '\''
+        + ", genre='" + genre + '\''
         + ", extra=" + extra
         + '}';
   }
@@ -208,8 +215,12 @@ public class IntermediaryBook {
       }.getType();
       List<Pair<String, String>> authors = getValueOrNull(context, root, "authors", type);
 
+      Type genreType = new TypeToken<List<String>>() {
+      }.getType();
+      List<String> genre = getValueOrNull(context, root, "genre", genreType);
+
       return new IntermediaryBook(title, authors, publisher, coverType, description, pageCount,
-          language, isbnString, isbn, price, rating, borrower, extra);
+          language, isbnString, isbn, price, rating, borrower, genre, extra);
     }
 
     private <T> T getValueOrNull(JsonDeserializationContext context, JsonObject root, String name,
